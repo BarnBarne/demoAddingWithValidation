@@ -12,12 +12,14 @@ const AddUser = props => {
 		setAge(event.target.value)
 	}
 
-	const addUserHandler = (event) => {
-        event.preventDefault()
-		const NewUser = {
-			username: username,
-			age: age,
-		}
+	const addUserHandler = event => {
+		event.preventDefault()
+		const NewUser = [
+			{
+				username: username,
+				age: age,
+			},
+		]
 
 		props.onAddUser(NewUser)
 	}
