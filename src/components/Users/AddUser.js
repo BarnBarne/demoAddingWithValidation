@@ -1,24 +1,18 @@
-import React, { useState } from 'react'
+import React, { useRef } from 'react'
 
 import styles from './AddUser.module.css'
 import Card from '../UI/Card'
 import Button from '../UI/Button'
 
 const AddUser = props => {
-	const [username, setUsername] = useState('')
-	const [age, setAge] = useState('')
-
-	const usernameHandler = event => {
-		setUsername(event.target.value)
-	}
-
-	const ageHandler = event => {
-		setAge(event.target.value)
-	}
+	const nameInputRef = useRef()
+	const ageInputRef = useRef()
 
 	const addUserHandler = event => {
 		event.preventDefault()
-		if (username.trim().length === 0 || age.length === 0) {
+		const enteredName = nameInputRef.current.value
+		const enteredAge = ageInputRef.current.value
+		if (enteredName.trim().length === 0 || enteredAge.length === 0) {
 			props.onError({
 				title: 'input valid age or username',
 				message: 'Please enter a valid age or username (non-empty values)',
@@ -26,7 +20,7 @@ const AddUser = props => {
 			return
 		}
 
-		if (+age > 150) {
+		if (+enteredAge > 150) {
 			props.onError({
 				title: 'Invalid age',
 				message: 'Please enter a valid age (max age is 150)',
@@ -34,7 +28,7 @@ const AddUser = props => {
 			return
 		}
 
-		if (+age < 1) {
+		if (+enteredAge < 1) {
 			props.onError({
 				title: 'Invalid age',
 				message: 'Please enter a valid age (age must be greater than 0)',
@@ -44,23 +38,25 @@ const AddUser = props => {
 
 		const NewUser = [
 			{
-				username: username,
-				age: age,
+				username: enteredName,
+				age: enteredAge,
 			},
 		]
 
 		props.onAddUser(NewUser)
-		setUsername('')
-		setAge('')
+		nameInputRef.current.value = ''
+		ageInputRef.current.value = ''
 	}
 
 	return (
 		<Card className={styles.input}>
 			<form onSubmit={addUserHandler}>
 				<label htmlFor='username'>Username</label>
-				<input id='username' type='text' value={username} onChange={usernameHandler}></input>
+				{/* uncontrolled component */}
+				<input id='username' type='text' ref={nameInputRef}></input>
 				<label htmlFor='age'>Age (Years)</label>
-				<input id='age' type='number' value={age} onChange={ageHandler}></input>
+				{/* uncontrolled component */}
+				<input id='age' type='number' ref={ageInputRef}></input>
 				<Button type='submit'>Add User</Button>
 			</form>
 		</Card>

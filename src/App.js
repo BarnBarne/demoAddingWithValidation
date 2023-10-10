@@ -23,11 +23,11 @@ function App() {
 	}
 
 	return (
-		<div>
+		<>
 			{error && <ErrorModal title={error.title} message={error.message} onCloseError={closeErrorHandler} />}
 			<AddUser onAddUser={addUserHandler} onError={errorHandler} />
 			{newUser && <UsersList userData={newUser} />}
-		</div>
+		</>
 	)
 }
 
